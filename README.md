@@ -102,6 +102,14 @@ Supabase 继续负责宾客数据，不作为网页托管：Supabase Storage 的
 https://<你的 GitHub 用户名>.github.io/<仓库名>/
 ```
 
+本项目当前已启用 GitHub Pages，公开网址是：
+
+```text
+https://zhongruining.github.io/engagement_plan/
+```
+
+直接把上面的地址粘贴到 Chrome、Edge 或 Safari 地址栏即可查看；以后推送到 `main` 分支后，GitHub Actions 会自动重新发布。
+
 `package.json` 和 `pnpm-lock.yaml` 必须留在根目录，GitHub Actions、Vite 和 pnpm 才能自动识别项目。`.openai/hosting.json` 只用于管理当前 Sites 项目；确认改用 GitHub Pages 后可以删除它。
 
 ## 后续修改位置
