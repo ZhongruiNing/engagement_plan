@@ -1,0 +1,11 @@
+<section aria-labelledby="guests-title">
+  <header class="page-heading"><div><p class="eyebrow">Together, with our loved ones</p><h1 id="guests-title">宾客名单</h1></div><div class="guest-summary"><span id="total-count">—</span> 位亲友 · 共赴良辰</div></header>
+  <div class="connection-bar"><p id="connection" role="status">正在连接共享名单…</p><button class="text-button" id="retry" type="button" hidden>重新连接</button></div>
+  <div class="guest-columns">
+    <section class="guest-card groom" data-side="groom" aria-labelledby="groom-title"><header><div><span class="eyebrow">Groom's guests</span><h2 id="groom-title">男方宾客</h2></div><span class="side-count">— 位</span></header><ul class="guest-list" aria-label="男方宾客名单"></ul><p class="empty-list">正在读取名单…</p><div class="drafts"></div><button class="add-guest" type="button" disabled><span aria-hidden="true">＋</span> 添加宾客</button></section>
+    <section class="guest-card bride" data-side="bride" aria-labelledby="bride-title"><header><div><span class="eyebrow">Bride's guests</span><h2 id="bride-title">女方宾客</h2></div><span class="side-count">— 位</span></header><ul class="guest-list" aria-label="女方宾客名单"></ul><p class="empty-list">正在读取名单…</p><div class="drafts"></div><button class="add-guest" type="button" disabled><span aria-hidden="true">＋</span> 添加宾客</button></section>
+  </div>
+  <p class="guest-note">与亲友共用这份名单，增减都会同步。输入姓名后按回车，或点击保存。</p>
+  <p id="guest-feedback" class="guest-feedback" role="status" aria-live="polite"></p>
+  <dialog class="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description"><h2 id="delete-title">移除这位宾客？</h2><p id="delete-description"></p><p class="delete-error" role="alert"></p><div class="dialog-actions"><button class="text-button" id="cancel-delete" type="button">保留宾客</button><button class="primary-button" id="confirm-delete" type="button">确认移除</button></div></dialog>
+</section>
