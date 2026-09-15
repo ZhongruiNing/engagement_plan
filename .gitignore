@@ -1,8 +1,9 @@
 node_modules/
 dist/
+.pnpm-store/
 .env
 .env.local
 .env.*.local
 .sites-runtime/
-test-results/
 *.zip
+*.tar.gz

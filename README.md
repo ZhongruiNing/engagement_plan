@@ -30,8 +30,9 @@ src/
 │   ├── home/{home.html,home.css,home.js}
 │   └── guests/{guests.html,guests.css,guests.js}
 └── photos/cover.png
-supabase/schema.sql             # 数据表、权限和 Realtime 设置
-tests/                           # 单元、浏览器和真实云端验收脚本
+config/
+└── .env.example                # 环境变量模板
+supabase/schema.sql              # 数据表、权限和 Realtime 设置
 ```
 
 ## 本地运行
@@ -50,7 +51,7 @@ pnpm build
 pnpm preview
 ```
 
-也可以复制 `.env.example` 为 `.env.local`，填写配置。附件中提供的 Supabase URL 和 publishable key 已作为默认值写入配置，前端没有使用管理员 service role key。
+也可以复制 `config/.env.example` 为项目根目录的 `.env.local`，填写配置。附件中提供的 Supabase URL 和 publishable key 已作为默认值写入配置，前端没有使用管理员 service role key。
 
 ## Supabase 配置
 
@@ -79,16 +80,6 @@ hotel: {
 
 填写高德 Web JS API Key 后，设置 `VITE_AMAP_KEY`。生产环境还应设置高德安全密钥代理地址 `VITE_AMAP_SERVICE_HOST`；不要把安全密钥直接暴露在静态网页。未配置时页面会显示优雅的地图占位和高德路线链接。
 
-## 测试
-
-```bash
-pnpm test                         # 姓名校验
-node tests/live.mjs               # 真实 Supabase 双客户端读写/Realtime 验收
-pnpm test:ui                      # Chromium + WebKit 多尺寸 UI 测试
-```
-
-`tests/live.mjs` 只创建带唯一 ID 的临时记录，并在结束时删除；不会修改已有宾客。浏览器测试使用拦截的测试数据，不会污染云端。
-
 ## Git 与部署
 
 源代码仓库：`https://gitee.com/ZhongruiNing/engagement_plan`。提交和推送：
@@ -99,7 +90,7 @@ git commit -m "feat: build engagement plan home and guest list"
 git push origin main
 ```
 
-Gitee Pages 当前有暂停服务记录，因此发布使用 Sites 静态托管；构建目录为 `dist/`，部署配置在 `.openai/hosting.json`。后续修改后重新构建、提交并发布即可。
+Gitee Pages 当前有暂停服务记录，因此发布使用 Sites 静态托管；构建目录为 `dist/`。后续修改后重新构建、提交并发布即可。
 
 ## 后续修改位置
 
