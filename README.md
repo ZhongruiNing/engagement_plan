@@ -32,6 +32,8 @@ src/
 └── photos/cover.png
 config/
 └── .env.example                # 环境变量模板
+.github/workflows/
+└── deploy-pages.yml             # GitHub Pages 自动部署
 supabase/schema.sql              # 数据表、权限和 Realtime 设置
 ```
 
@@ -90,7 +92,15 @@ git commit -m "feat: build engagement plan home and guest list"
 git push origin main
 ```
 
-Gitee Pages 当前有暂停服务记录，因此发布使用 Sites 静态托管；构建目录为 `dist/`。后续修改后重新构建、提交并发布即可。
+Gitee 目前只作为源代码仓库使用，Gitee Pages 有暂停服务记录。当前 Sites 地址可能被 Cloudflare 安全策略拦截，因此不作为稳定公开入口。
+
+仓库已包含 `.github/workflows/deploy-pages.yml`。将代码推送到一个公开 GitHub 仓库后，在仓库 Settings → Pages 中选择 GitHub Actions，工作流会自动构建并发布到：
+
+```text
+https://<你的 GitHub 用户名>.github.io/<仓库名>/
+```
+
+`package.json` 和 `pnpm-lock.yaml` 必须留在根目录，GitHub Actions、Vite 和 pnpm 才能自动识别项目。`.openai/hosting.json` 只用于管理当前 Sites 项目；确认改用 GitHub Pages 后可以删除它。
 
 ## 后续修改位置
 
