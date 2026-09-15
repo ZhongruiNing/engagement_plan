@@ -94,6 +94,8 @@ git push origin main
 
 Gitee 目前只作为源代码仓库使用，Gitee Pages 有暂停服务记录。当前 Sites 地址可能被 Cloudflare 安全策略拦截，因此不作为稳定公开入口。
 
+Supabase 继续负责宾客数据，不作为网页托管：Supabase Storage 的公开 URL 适合图片等静态资源，但 HTML 文件会按纯文本返回，不能直接替代 GitHub Pages。
+
 仓库已包含 `.github/workflows/deploy-pages.yml`。将代码推送到一个公开 GitHub 仓库后，在仓库 Settings → Pages 中选择 GitHub Actions，工作流会自动构建并发布到：
 
 ```text
