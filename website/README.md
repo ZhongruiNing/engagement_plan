@@ -2,6 +2,8 @@
 
 宁忠瑞与吴南的订婚筹备网页。第一阶段包含首页和共享宾客名单，页面适合电脑及 iPad 横屏使用。
 
+本目录是网页工程根目录；同级的 `welcome_board/` 预留给迎宾展板，当前不参与网页构建。
+
 ## 已完成
 
 - 首页：封面照片、订婚标题、姓名、日期和可配置的酒店地图占位。
@@ -42,6 +44,7 @@ supabase/schema.sql              # 数据表、权限和 Realtime 设置
 需要 Node.js 18 或更新版本。项目已包含依赖锁文件：
 
 ```bash
+cd website
 pnpm install
 pnpm dev
 ```
@@ -69,18 +72,20 @@ pnpm preview
 
 ## 地图配置
 
-酒店信息在 `src/js/config.js` 的 `eventConfig.hotel` 中修改：
+酒店信息在 `src/js/config.js` 的 `eventConfig.hotel` 中修改，当前已配置为喜雁之约宴会酒店：
 
 ```js
 hotel: {
-  name: '酒店名称',
-  address: '酒店地址',
-  longitude: 116.3974,
-  latitude: 39.9093,
+  name: '喜雁之约宴会酒店',
+  address: '枣庄市市中区人民西路21号',
+  longitude: 117.523382,
+  latitude: 34.830948,
 }
 ```
 
 填写高德 Web JS API Key 后，设置 `VITE_AMAP_KEY`。生产环境还应设置高德安全密钥代理地址 `VITE_AMAP_SERVICE_HOST`；不要把安全密钥直接暴露在静态网页。未配置时页面会显示优雅的地图占位和高德路线链接。
+
+本机的 `config/amap_web_js_api_key.json` 仅用于保存密钥，已加入忽略规则，不会被提交；其中的 `password` 不应复制到前端代码。
 
 ## Git 与部署
 
@@ -110,7 +115,7 @@ https://zhongruining.github.io/engagement_plan/
 
 直接把上面的地址粘贴到 Chrome、Edge 或 Safari 地址栏即可查看；以后推送到 `main` 分支后，GitHub Actions 会自动重新发布。
 
-`package.json` 和 `pnpm-lock.yaml` 必须留在根目录，GitHub Actions、Vite 和 pnpm 才能自动识别项目。`.openai/hosting.json` 只用于管理当前 Sites 项目；确认改用 GitHub Pages 后可以删除它。
+`package.json` 和 `pnpm-lock.yaml` 必须留在 `website/` 根目录，GitHub Actions 已从该目录安装依赖并构建。`website/.openai/hosting.json` 只用于管理旧的 Sites 项目；确认改用 GitHub Pages 后可以删除它。
 
 ## 后续修改位置
 

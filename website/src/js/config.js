@@ -3,7 +3,12 @@ export const eventConfig = {
   title: '订婚计划安排',
   couple: '宁忠瑞 & 吴南',
   dateLabel: '2026年10月05日',
-  hotel: { name: '', address: '', longitude: null, latitude: null },
+  hotel: {
+    name: '喜雁之约宴会酒店',
+    address: '枣庄市市中区人民西路21号',
+    longitude: 117.523382,
+    latitude: 34.830948,
+  },
 };
 export const backendConfig = {
   url: import.meta.env.VITE_SUPABASE_URL || 'https://xisfixidmdndheoefrlw.supabase.co',
