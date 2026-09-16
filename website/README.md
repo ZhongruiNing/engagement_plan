@@ -6,7 +6,7 @@
 
 ## 已完成
 
-- 首页：封面照片、订婚标题、姓名、日期和可配置的酒店地图占位。
+- 首页：封面照片、订婚标题、姓名、日期和酒店地图；酒店名称可打开高德地图。
 - 宾客名单：男方/女方分栏，列表自然增高，不使用内部滚动条。
 - 宾客操作：添加、回车保存、空白校验、删除确认、保存失败时保留输入。
 - 共享同步：使用 Supabase Postgres + Realtime，所有拿到网址的人无需登录即可读取、新增、删除。
@@ -83,13 +83,13 @@ hotel: {
 }
 ```
 
-填写高德 Web JS API Key 后，设置 `VITE_AMAP_KEY`。生产环境还应设置高德安全密钥代理地址 `VITE_AMAP_SERVICE_HOST`；不要把安全密钥直接暴露在静态网页。未配置代理时，页面会用带标记的嵌入式地图显示坐标，地图下方只显示酒店名称；配置代理后会优先使用高德 JS API。
+填写高德 Web JS API Key 后，设置 `VITE_AMAP_KEY`；自定义样式 ID 可设置 `VITE_AMAP_STYLE_ID`（当前值已写入 `src/js/config.js`）。生产环境还应设置高德安全密钥代理地址 `VITE_AMAP_SERVICE_HOST`；不要把安全密钥直接暴露在静态网页。未配置代理时，页面会用带标记的嵌入式地图显示坐标，地图下方只显示酒店名称；配置代理后会优先使用高德 JS API，并应用自定义样式。酒店名称链接使用高德 URI API：电脑打开网页，手机尝试唤起高德 App，未安装时继续使用网页。
 
 本机的 `config/amap_web_js_api_key.json` 仅用于保存密钥，已加入忽略规则，不会被提交；其中的 `password` 不应复制到前端代码。
 
 ## Git 与部署
 
-源代码仓库：`https://gitee.com/ZhongruiNing/engagement_plan`。提交和推送：
+源代码仓库：`https://github.com/ZhongruiNing/engagement_plan`。提交和推送：
 
 ```bash
 git add .
@@ -115,7 +115,7 @@ https://zhongruining.github.io/engagement_plan/
 
 直接把上面的地址粘贴到 Chrome、Edge 或 Safari 地址栏即可查看；以后推送到 `main` 分支后，GitHub Actions 会自动重新发布。
 
-`package.json` 和 `pnpm-lock.yaml` 必须留在 `website/` 根目录，GitHub Actions 已从该目录安装依赖并构建。`website/.openai/hosting.json` 只用于管理旧的 Sites 项目；确认改用 GitHub Pages 后可以删除它。
+`package.json` 和 `pnpm-lock.yaml` 必须留在 `website/` 根目录，GitHub Actions 已从该目录安装依赖并构建。`website/.openai/hosting.json` 只用于管理旧的 Sites 项目，已从网页构建内容中隔离；如果以后仍需 Sites 管理则保留即可。
 
 ## 后续修改位置
 

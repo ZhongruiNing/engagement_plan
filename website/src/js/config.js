@@ -17,4 +17,6 @@ export const backendConfig = {
 export const mapConfig = {
   key: import.meta.env.VITE_AMAP_KEY || '',
   serviceHost: import.meta.env.VITE_AMAP_SERVICE_HOST || '',
+  // Style IDs are public identifiers; the key and security secret stay out of source control.
+  styleId: import.meta.env.VITE_AMAP_STYLE_ID || 'dc027a862f81fd810851f7a80a03a5d1',
 };

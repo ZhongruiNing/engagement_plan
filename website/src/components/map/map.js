@@ -66,17 +66,49 @@ function createOpenStreetMapEmbed(hotel) {
   return iframe;
 }
 
+function isMobileDevice() {
+  return /Android|iPhone|iPad|iPod|HarmonyOS/i.test(navigator.userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+function createAmapMarkerUrl(hotel) {
+  const params = new URLSearchParams({
+    position: `${hotel.longitude},${hotel.latitude}`,
+    name: hotel.name || '酒店位置',
+    src: 'engagement_plan',
+    coordinate: 'gaode',
+    // AMap uses callnative=1 to try the mobile app. When it cannot launch,
+    // the same HTTPS URI remains available as the browser fallback.
+    callnative: isMobileDevice() ? '1' : '0',
+  });
+  return `https://uri.amap.com/marker?${params.toString()}`;
+}
+
+function createVenueName(hotel, hasLocation) {
+  const name = document.createElement(hasLocation ? 'a' : 'p');
+  name.className = hasLocation ? 'venue-name venue-name-link' : 'venue-name';
+  name.textContent = hotel.name || '酒店位置待确定';
+  if (hasLocation) {
+    name.href = createAmapMarkerUrl(hotel);
+    name.title = '在高德地图中查看酒店位置';
+    name.setAttribute('aria-label', `在高德地图中查看${hotel.name || '酒店'}位置`);
+  }
+  return name;
+}
+
 function renderAmap(frame, AMap, hotel) {
   frame.replaceChildren();
   frame.className = 'map-frame map-frame-amap';
   const canvas = document.createElement('div');
   canvas.className = 'map-canvas';
   frame.append(canvas);
-  const map = new AMap.Map(canvas, {
+  const options = {
     zoom: 16,
     center: [hotel.longitude, hotel.latitude],
     resizeEnable: true,
-  });
+  };
+  if (mapConfig.styleId) options.mapStyle = `amap://styles/${mapConfig.styleId}`;
+  const map = new AMap.Map(canvas, options);
   map.add(new AMap.Marker({ position: [hotel.longitude, hotel.latitude], title: hotel.name }));
   return map;
 }
@@ -87,9 +119,7 @@ export function mountMap(container) {
   const hotel = eventConfig.hotel;
   const hasLocation = hasValidLocation(hotel);
   const frame = createMapFrame(hotel);
-  const name = document.createElement('p');
-  name.className = 'venue-name';
-  name.textContent = hotel.name || '酒店位置待确定';
+  const name = createVenueName(hotel, hasLocation);
   container.replaceChildren(frame, name);
 
   if (!hasLocation) {
