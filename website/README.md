@@ -83,7 +83,7 @@ hotel: {
 }
 ```
 
-填写高德 Web JS API Key 后，设置 `VITE_AMAP_KEY`；自定义样式 ID 可设置 `VITE_AMAP_STYLE_ID`（当前值已写入 `src/js/config.js`）。生产环境还应设置高德安全密钥代理地址 `VITE_AMAP_SERVICE_HOST`；不要把安全密钥直接暴露在静态网页。未配置代理时，页面会用带标记的嵌入式地图显示坐标，地图下方只显示酒店名称；配置代理后会优先使用高德 JS API，并应用自定义样式。酒店名称链接使用高德 URI API：电脑打开网页，手机尝试唤起高德 App，未安装时继续使用网页。
+高德 Web JS API Key 和安全密钥通过环境变量提供，不写入仓库；请在高德控制台限制允许的域名。自定义样式 ID 已配置，设置 `VITE_AMAP_KEY` 后地图会优先使用高德 JS API 并应用该样式。安全密钥可通过 `VITE_AMAP_SECURITY_JS_CODE` 放在未提交的 `.env.local`，或使用更安全的 `VITE_AMAP_SERVICE_HOST` 代理。高德 SDK 加载失败时，页面会用带标记的嵌入式地图显示坐标。地图下方只显示酒店名称，链接使用高德 URI API：电脑打开网页，手机尝试唤起高德 App，未安装时继续使用网页。
 
 本机的 `config/amap_web_js_api_key.json` 仅用于保存密钥，已加入忽略规则，不会被提交；其中的 `password` 不应复制到前端代码。
 

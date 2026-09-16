@@ -15,8 +15,11 @@ export const backendConfig = {
   publishableKey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_HBUQ13R-CjLnl-alEKr20g_B8MW2lzj',
 };
 export const mapConfig = {
+  // Restrict the key to the published domain in the AMap console. Keep the
+  // key and security secret in an ignored env file or deployment secret.
   key: import.meta.env.VITE_AMAP_KEY || '',
   serviceHost: import.meta.env.VITE_AMAP_SERVICE_HOST || '',
+  securityJsCode: import.meta.env.VITE_AMAP_SECURITY_JS_CODE || '',
   // Style IDs are public identifiers; the key and security secret stay out of source control.
   styleId: import.meta.env.VITE_AMAP_STYLE_ID || 'dc027a862f81fd810851f7a80a03a5d1',
 };

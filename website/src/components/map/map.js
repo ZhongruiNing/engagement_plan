@@ -6,7 +6,10 @@ function loadMapSdk() {
   if (window.AMap) return Promise.resolve(window.AMap);
   if (!sdkPromise) {
     sdkPromise = new Promise((resolve, reject) => {
-      window._AMapSecurityConfig = mapConfig.serviceHost ? { serviceHost: mapConfig.serviceHost } : {};
+      const securityConfig = {};
+      if (mapConfig.serviceHost) securityConfig.serviceHost = mapConfig.serviceHost;
+      if (mapConfig.securityJsCode) securityConfig.securityJsCode = mapConfig.securityJsCode;
+      window._AMapSecurityConfig = securityConfig;
       const script = document.createElement('script');
       const timer = setTimeout(() => finish(new Error('地图加载超时')), 12000);
 
@@ -132,9 +135,9 @@ export function mountMap(container) {
 
   frame.append(createOpenStreetMapEmbed(hotel));
 
-  // AMap is used when a server-side security proxy is configured. Otherwise the
-  // embedded map keeps the public static page useful without exposing the secret.
-  if (mapConfig.key && mapConfig.serviceHost) {
+  // Use AMap when a public Web JS API key is available. If the SDK cannot load,
+  // the embedded map remains visible as a resilient fallback.
+  if (mapConfig.key) {
     loadMapSdk()
       .then((AMap) => {
         if (!disposed) map = renderAmap(frame, AMap, hotel);

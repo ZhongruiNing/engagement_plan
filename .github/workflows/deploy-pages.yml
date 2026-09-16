@@ -39,6 +39,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build site
+        env:
+          VITE_AMAP_KEY: ${{ secrets.VITE_AMAP_KEY }}
+          VITE_AMAP_SECURITY_JS_CODE: ${{ secrets.VITE_AMAP_SECURITY_JS_CODE }}
+          VITE_AMAP_SERVICE_HOST: ${{ secrets.VITE_AMAP_SERVICE_HOST }}
+          VITE_AMAP_STYLE_ID: ${{ secrets.VITE_AMAP_STYLE_ID }}
         run: pnpm build
       - name: Configure Pages
         uses: actions/configure-pages@v5
