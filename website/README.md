@@ -83,7 +83,7 @@ hotel: {
 }
 ```
 
-填写高德 Web JS API Key 后，设置 `VITE_AMAP_KEY`。生产环境还应设置高德安全密钥代理地址 `VITE_AMAP_SERVICE_HOST`；不要把安全密钥直接暴露在静态网页。未配置时页面会显示优雅的地图占位和高德路线链接。
+填写高德 Web JS API Key 后，设置 `VITE_AMAP_KEY`。生产环境还应设置高德安全密钥代理地址 `VITE_AMAP_SERVICE_HOST`；不要把安全密钥直接暴露在静态网页。未配置代理时，页面会用带标记的嵌入式地图显示坐标，地图下方只显示酒店名称；配置代理后会优先使用高德 JS API。
 
 本机的 `config/amap_web_js_api_key.json` 仅用于保存密钥，已加入忽略规则，不会被提交；其中的 `password` 不应复制到前端代码。
 
