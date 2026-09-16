@@ -83,7 +83,7 @@ hotel: {
 }
 ```
 
-高德 Web JS API Key 和安全密钥通过环境变量提供，不写入仓库；请在高德控制台限制允许的域名。自定义样式 ID 已配置，设置 `VITE_AMAP_KEY` 后地图会优先使用高德 JS API 并应用该样式。安全密钥可通过 `VITE_AMAP_SECURITY_JS_CODE` 放在未提交的 `.env.local`，或使用 `VITE_AMAP_SERVICE_HOST` 代理。GitHub Pages 工作流只读取 Key、样式 ID 和代理地址，不把安全密钥注入公开构建；如果 Key 强制要求安全密钥，请配置代理。高德 SDK 加载失败时，页面会用带标记的嵌入式地图显示坐标。地图下方只显示酒店名称，链接使用高德 URI API：电脑打开网页，手机尝试唤起高德 App，未安装时继续使用网页。
+高德 Web JS API Key 和安全密钥通过环境变量提供，不写入仓库；请在高德控制台限制允许的域名。自定义样式 ID 已配置，设置 `VITE_AMAP_KEY` 后地图会优先使用高德 JS API 并应用该样式。公开页内置了一张按该样式生成的高德地图底图，因此即使没有部署 Key 也能看到自定义样式；配置 Key 后会升级为可交互地图。安全密钥可通过 `VITE_AMAP_SECURITY_JS_CODE` 放在未提交的 `.env.local`，或使用 `VITE_AMAP_SERVICE_HOST` 代理。GitHub Pages 工作流只读取 Key、样式 ID 和代理地址，不把安全密钥注入公开构建；如果 Key 强制要求安全密钥，请配置代理。地图下方只显示酒店名称，链接使用高德 URI API：电脑打开网页，手机尝试唤起高德 App，未安装时继续使用网页。
 
 本机的 `config/amap_web_js_api_key.json` 仅用于保存密钥，已加入忽略规则，不会被提交；其中的 `password` 不应复制到前端代码。
 

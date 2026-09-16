@@ -1,4 +1,5 @@
 import { eventConfig, mapConfig } from '../../js/config.js';
+import venueMapImage from '../../photos/venue-map.png';
 
 let sdkPromise;
 
@@ -69,6 +70,17 @@ function createOpenStreetMapEmbed(hotel) {
   return iframe;
 }
 
+function createStaticMapImage(hotel) {
+  const image = document.createElement('img');
+  image.className = 'map-image';
+  image.src = venueMapImage;
+  image.alt = `${hotel.name || '酒店'}位置地图`;
+  image.loading = 'eager';
+  image.decoding = 'async';
+  image.addEventListener('error', () => image.replaceWith(createOpenStreetMapEmbed(hotel)), { once: true });
+  return image;
+}
+
 function isMobileDevice() {
   return /Android|iPhone|iPad|iPod|HarmonyOS/i.test(navigator.userAgent)
     || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -133,10 +145,12 @@ export function mountMap(container) {
     return () => { disposed = true; };
   }
 
-  frame.append(createOpenStreetMapEmbed(hotel));
+  // The generated image keeps the custom AMap style visible on the public
+  // static page. A configured key upgrades it to an interactive AMap canvas.
+  frame.append(createStaticMapImage(hotel));
 
-  // Use AMap when a public Web JS API key is available. If the SDK cannot load,
-  // the embedded map remains visible as a resilient fallback.
+  // Use AMap when a Web JS API key is available. If the SDK cannot load, the
+  // custom-style image remains visible as a resilient fallback.
   if (mapConfig.key) {
     loadMapSdk()
       .then((AMap) => {
