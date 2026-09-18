@@ -1,0 +1,15 @@
+<section class="workspace-page schedule-page" aria-labelledby="schedule-title">
+  <header class="page-heading">
+    <div><p class="eyebrow">The day, step by step</p><h1 id="schedule-title">议程安排</h1></div>
+    <p class="schedule-summary" id="schedule-summary">— 项</p>
+  </header>
+  <div class="workspace-status" aria-live="polite"><p id="schedule-connection">正在连接共享议程…</p><button class="text-button" id="schedule-retry" type="button" hidden>重新连接</button></div>
+  <section class="data-card" aria-labelledby="schedule-table-title">
+    <div class="data-card-heading"><h2 id="schedule-table-title">当天安排</h2><span class="eyebrow">Order by dragging</span></div>
+    <table class="data-table schedule-table"><colgroup><col class="schedule-sequence"><col class="schedule-time"><col class="schedule-content"><col class="schedule-remark"><col class="schedule-action"></colgroup><thead><tr><th scope="col">序号</th><th scope="col">时间</th><th scope="col">议程内容</th><th scope="col">备注</th><th scope="col"><span class="visually-hidden">操作</span></th></tr></thead><tbody id="schedule-rows"></tbody></table>
+    <button class="add-row-button" id="add-schedule" type="button" disabled><span aria-hidden="true">＋</span> 增加议程</button>
+  </section>
+  <p class="schedule-tip">按住每行左侧的点状手柄，可以拖动调整顺序；排序会自动保存并同步给其他人。</p>
+  <p id="schedule-feedback" class="workspace-feedback" role="status" aria-live="polite"></p>
+  <dialog class="delete-dialog" data-delete-dialog aria-labelledby="schedule-delete-title" aria-describedby="schedule-delete-description"><h2 id="schedule-delete-title">移除这项议程？</h2><p data-delete-description id="schedule-delete-description"></p><p class="delete-error" data-delete-error role="alert"></p><div class="dialog-actions"><button class="text-button" data-cancel-delete type="button">保留议程</button><button class="primary-button" data-confirm-delete type="button">确认移除</button></div></dialog>
+</section>

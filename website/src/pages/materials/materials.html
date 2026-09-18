@@ -1,0 +1,31 @@
+<section class="workspace-page materials-page" aria-labelledby="materials-title">
+  <header class="page-heading">
+    <div><p class="eyebrow">What we need to prepare</p><h1 id="materials-title">物料准备</h1></div>
+    <p class="materials-summary" id="materials-summary">— 项</p>
+  </header>
+  <div class="workspace-status" aria-live="polite"><p id="materials-connection">正在连接共享物料…</p><button class="text-button" id="materials-retry" type="button" hidden>重新连接</button></div>
+  <div class="materials-sections">
+    <section class="data-card material-card" data-category="clothing" aria-labelledby="materials-clothing-title">
+      <div class="data-card-heading"><h2 id="materials-clothing-title">衣物</h2><span class="eyebrow">Clothing</span></div>
+      <table class="data-table material-table"><colgroup><col class="material-number"><col class="material-name-col"><col class="material-remark-col"><col class="material-status-col"><col class="material-action-col"></colgroup><thead><tr><th scope="col">序号</th><th scope="col">物品名称</th><th scope="col">备注</th><th scope="col">是否完成</th><th scope="col"><span class="visually-hidden">操作</span></th></tr></thead><tbody></tbody></table>
+      <button class="add-row-button" type="button" disabled><span aria-hidden="true">＋</span> 添加物料</button>
+    </section>
+    <section class="data-card material-card" data-category="decoration" aria-labelledby="materials-decoration-title">
+      <div class="data-card-heading"><h2 id="materials-decoration-title">装饰摆件</h2><span class="eyebrow">Decoration</span></div>
+      <table class="data-table material-table"><colgroup><col class="material-number"><col class="material-name-col"><col class="material-remark-col"><col class="material-status-col"><col class="material-action-col"></colgroup><thead><tr><th scope="col">序号</th><th scope="col">物品名称</th><th scope="col">备注</th><th scope="col">是否完成</th><th scope="col"><span class="visually-hidden">操作</span></th></tr></thead><tbody></tbody></table>
+      <button class="add-row-button" type="button" disabled><span aria-hidden="true">＋</span> 添加物料</button>
+    </section>
+    <section class="data-card material-card" data-category="copywriting" aria-labelledby="materials-copywriting-title">
+      <div class="data-card-heading"><h2 id="materials-copywriting-title">文案</h2><span class="eyebrow">Copywriting</span></div>
+      <table class="data-table material-table"><colgroup><col class="material-number"><col class="material-name-col"><col class="material-remark-col"><col class="material-status-col"><col class="material-action-col"></colgroup><thead><tr><th scope="col">序号</th><th scope="col">物品名称</th><th scope="col">备注</th><th scope="col">是否完成</th><th scope="col"><span class="visually-hidden">操作</span></th></tr></thead><tbody></tbody></table>
+      <button class="add-row-button" type="button" disabled><span aria-hidden="true">＋</span> 添加物料</button>
+    </section>
+    <section class="data-card material-card" data-category="other" aria-labelledby="materials-other-title">
+      <div class="data-card-heading"><h2 id="materials-other-title">其他</h2><span class="eyebrow">Other</span></div>
+      <table class="data-table material-table"><colgroup><col class="material-number"><col class="material-name-col"><col class="material-remark-col"><col class="material-status-col"><col class="material-action-col"></colgroup><thead><tr><th scope="col">序号</th><th scope="col">物品名称</th><th scope="col">备注</th><th scope="col">是否完成</th><th scope="col"><span class="visually-hidden">操作</span></th></tr></thead><tbody></tbody></table>
+      <button class="add-row-button" type="button" disabled><span aria-hidden="true">＋</span> 添加物料</button>
+    </section>
+  </div>
+  <p id="materials-feedback" class="workspace-feedback" role="status" aria-live="polite"></p>
+  <dialog class="delete-dialog" data-delete-dialog aria-labelledby="materials-delete-title" aria-describedby="materials-delete-description"><h2 id="materials-delete-title">移除这项物料？</h2><p data-delete-description id="materials-delete-description"></p><p class="delete-error" data-delete-error role="alert"></p><div class="dialog-actions"><button class="text-button" data-cancel-delete type="button">保留物料</button><button class="primary-button" data-confirm-delete type="button">确认移除</button></div></dialog>
+</section>

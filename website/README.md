@@ -10,27 +10,39 @@
 - 宾客名单：男方/女方分栏，列表自然增高，不使用内部滚动条。
 - 宾客操作：添加、回车保存、空白校验、删除确认、保存失败时保留输入。
 - 共享同步：使用 Supabase Postgres + Realtime，所有拿到网址的人无需登录即可读取、新增、删除。
-- 导航：首页、宾客名单已实现；人员安排、物料准备、议程安排、主持词暂显示“正在准备中”。
+- 导航：首页、宾客名单、物料准备、议程安排、主持词已实现；人员安排暂显示“正在准备中”。
+- 物料准备：衣物、装饰摆件、文案、其他四类共享物料，支持直接编辑、状态、删除和 Realtime 同步。
+- 议程安排：共享时间表，支持直接编辑、删除、触摸友好的拖拽排序和排序同步。
+- 主持词：共享 Markdown 编辑器，左右实时预览、自动保存、Realtime 同步和安全 HTML 清理。
 
 ## 技术与结构
 
-项目使用 Vite、原生 JavaScript、CSS 和 Supabase JS 客户端。
+项目使用 Vite、原生 JavaScript、CSS 和 Supabase JS 客户端。新增 `sortablejs` 用于鼠标/iPad 触摸排序，`marked` 用于 Markdown 解析，`dompurify` 用于渲染结果清理。
 
 ```text
 src/
 ├── components/
 │   ├── cover/cover.js          # 顶部封面
 │   ├── map/map.js              # 高德地图加载与占位
-│   └── navigation/navigation.js
+│   ├── navigation/navigation.js
+│   ├── delete-dialog/delete-dialog.js
+│   └── table/table.css
 ├── css/global.css
 ├── js/
 │   ├── app.js                  # hash 页面切换
 │   ├── config.js               # 活动、Supabase、高德配置
-│   ├── guest-store.js          # 云端读写、Realtime、重连
+│   ├── guest-store.js          # 宾客云端读写、Realtime、重连
+│   ├── supabase-client.js      # 唯一 Supabase client 和通用表 store
+│   ├── materials-store.js
+│   ├── schedule-store.js
+│   ├── host-script-store.js
 │   └── guest-validation.js
 ├── pages/
 │   ├── home/{home.html,home.css,home.js}
-│   └── guests/{guests.html,guests.css,guests.js}
+│   ├── guests/{guests.html,guests.css,guests.js}
+│   ├── materials/{materials.html,materials.css,materials.js}
+│   ├── schedule/{schedule.html,schedule.css,schedule.js}
+│   └── host-script/{host-script.html,host-script.css,host-script.js}
 └── photos/cover.png
 config/
 └── .env.example                # 环境变量模板
@@ -60,12 +72,12 @@ pnpm preview
 
 ## Supabase 配置
 
-`supabase/schema.sql` 已在本项目中运行成功。它创建 `public.guests` 表，并仅授予公开 `anon` 角色读取、新增、删除权限，同时启用 Realtime；没有开放更新权限。
+`supabase/schema.sql` 包含 `public.guests`、`public.materials`、`public.schedules` 和 `public.host_script` 四张表，并为新模块授予公开 `anon` 角色读取、新增、修改、删除权限，同时启用 Realtime。宾客名单仍保持第一阶段的只读、新增、删除权限。
 
 若以后新建 Supabase 项目：
 
 1. 打开该项目的 SQL Editor。
-2. 运行 `supabase/schema.sql`。
+2. 运行 `supabase/schema.sql`（脚本可重复运行）。
 3. 在 `.env.local` 中设置 `VITE_SUPABASE_URL` 和 `VITE_SUPABASE_PUBLISHABLE_KEY`。
 
 公开名单意味着任何拿到网址的人都能修改名单，这是本项目的有意设计。不要把 service role key 放到浏览器或 `.env` 中提交到 Git。
@@ -94,7 +106,7 @@ hotel: {
 ```bash
 git add .
 git commit -m "feat: build engagement plan home and guest list"
-git push origin main
+git push github main
 ```
 
 Gitee 目前只作为源代码仓库使用，Gitee Pages 有暂停服务记录。当前 Sites 地址可能被 Cloudflare 安全策略拦截，因此不作为稳定公开入口。
@@ -116,6 +128,20 @@ https://zhongruining.github.io/engagement_plan/
 直接把上面的地址粘贴到 Chrome、Edge 或 Safari 地址栏即可查看；以后推送到 `main` 分支后，GitHub Actions 会自动重新发布。
 
 `package.json` 和 `pnpm-lock.yaml` 必须留在 `website/` 根目录，GitHub Actions 已从该目录安装依赖并构建。`website/.openai/hosting.json` 只用于管理旧的 Sites 项目，已从网页构建内容中隔离；如果以后仍需 Sites 管理则保留即可。
+
+## 第二阶段模块说明
+
+### 物料准备
+
+四个分类共用 `materials` 表：`category`、`name`、`remark`、`status`、时间字段。首次没有数据时只显示表头；添加、编辑、状态变化和删除都直接写入 Supabase，并通过 Realtime 通知其他页面。列表使用自然增长布局，没有内部垂直滚动条。
+
+### 议程安排
+
+`schedules` 表保存 `time`、`content`、`remark` 和 `sort_order`。行可以直接编辑、删除，也可以用鼠标或触摸手柄拖拽排序；排序完成后保存到 `sort_order`，刷新后仍按该字段显示。
+
+### 主持词
+
+`host_script` 使用固定 UUID 保存唯一共享文稿。左侧编辑 Markdown，右侧实时预览；输入停止约 800ms 后自动保存。`marked` 关闭原始 HTML，`DOMPurify` 再清理 HTML，避免主持词内容执行脚本。普通 Realtime 更新会同步到其他页面；多人同时编辑时采用最后一次保存覆盖的协作模型。
 
 ## 后续修改位置
 

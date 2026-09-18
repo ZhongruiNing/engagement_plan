@@ -1,20 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
-import { backendConfig } from './config.js';
+import { supabaseClient as client, friendlyError as sharedFriendlyError, fetchAllRows } from './supabase-client.js';
 import { validateGuestName } from './guest-validation.js';
 import { createId } from './id.js';
-const client = createClient(backendConfig.url, backendConfig.publishableKey, {
-  auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-  global: { fetch: (url, options = {}) => {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 12000);
-    return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timeout));
-  } },
-});
-export function friendlyError(error) {
-  if (error.code === 'PGRST205' || error.code === '42P01') return '共享名单尚未启用，请联系筹备人完成设置';
-  if (error.code === '42501' || error.status === 401 || error.status === 403) return '暂时没有名单访问权限，请联系筹备人';
-  return '暂时无法连接共享名单，请检查网络后重试';
-}
+export const friendlyError = sharedFriendlyError;
 export function createGuestStore(onChange) {
   let rows = [], alive = true, reading = false, dirty = false, available = false, error = '', realtime = false;
   const emit = () => { if (alive) onChange({ rows, available, error, realtime }); };
@@ -26,14 +13,7 @@ export function createGuestStore(onChange) {
       while (dirty && alive) {
         dirty = false;
         // Read pages so a long guest list is not silently truncated by the API row cap.
-        let next = [], offset = 0;
-        for (;;) {
-          const result = await client.from('guests').select('*').order('created_at').order('id').range(offset, offset + 499);
-          if (result.error) throw result.error;
-          next.push(...result.data);
-          if (result.data.length < 500) break;
-          offset += 500;
-        }
+        const next = await fetchAllRows('guests', [['created_at', true], ['id', true]]);
         rows = [...new Map(next.map(row => [row.id, row])).values()]; available = true; error = ''; emit();
       }
     } catch (cause) { error = friendlyError(cause); available = false; emit(); }
